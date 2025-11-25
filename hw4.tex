@@ -1,0 +1,131 @@
+\documentclass[addpoints]{exam}
+
+\usepackage{amsmath,amssymb, amsthm}
+\usepackage[a4paper]{geometry}
+\usepackage{hyperref}
+\usepackage{forest}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{titling}
+\usepackage{wasysym}
+\usepackage{mdframed}
+\usepackage{arabtex}
+\usepackage{utf8}
+\setcode{utf8}
+
+
+% Header and footer.
+\pagestyle{headandfoot}
+\runningheadrule
+\runningfootrule
+\runningheader{CS 212, Fall 2024}{HW 4: Reductions and Time Complexity}{Fall 2025}
+\runningfooter{}{Page \thepage\ of \numpages}{}
+\firstpageheader{}{}{}
+
+\newcommand{\classX}[1]{\ensuremath{\text{\textsf{\textbf{#1}}}}} 
+\newcommand{\Prob}[1]{\ensuremath{\text{\textsc{#1}}}}
+
+\newcommand{\classP}{\classX{P}}
+\newcommand{\classNP}{\classX{NP}}
+\newcommand{\EXP}{\classX{EXP}}
+\newcommand{\shuffle}{\textsc{shuffle}}
+
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Theorem}
+
+
+\boxedpoints
+% \printanswers %uncomment  this
+
+\title{HW 4: Reductions and Time Complexity\\ \vspace{0.5cm} \Large CS 212 Nature of Computation\\Habib University}
+\author{Blingblong} %Enter your team name here
+\date{Fall 2025}
+
+\begin{document}
+\maketitle
+
+\begin{questions}
+
+    \question[10] Prove or disprove the following claim: for any computational problem $A$, and $L \in \EXP \setminus \classP$, $A$ is decidable iff $A \leq_m L$.
+    \begin{solution}
+        %enter your solution here
+    \end{solution}
+    
+    \question We have seen in class that normally we assume that natural numbers are represented as string using the binary basis.That is, a natural number $n$ is represented by the sequence $x_0, x_1, \dots, x_{\log(n)}$ such that $n=\sum_{\log(n)}^{i=0}x_i 2^i$. However we could have used other encoding schemes. If $n\in \mathbb{N}$ then for any positive integer $b\geq 2$, the base $b$ representation of $n$, denoted by $\llcorner n \lrcorner_b$ is obtained as follows: First, represent $n$ as a sequence of digits in $\{0,\dots, b-1\}$, such that if the representation has $k$ digits then $n=\sum_{k}^{i=0}x_i b^i$ for each $x_i \in \{0,\dots, b-1\}$. Then replace each digit $d$ in the representation by its binary representation. And the unary representation of $n$, denoted by $\llcorner n \lrcorner_1$ unary is the string $1^n$. 
+    \begin{parts}
+        \part[10] Show that choosing a different base of representation will make no difference to the class $\classP$. That is, show that for every subset $S$ of the natural numbers, if for any $b \in \mathbb{Z}^+$ we define $L^b_S = \{\llcorner n \lrcorner_b | n \in S\}$ then $\forall x\in \mathbb{Z}^+ \setminus \{1\},\;L^x_S \in \classP \iff L^2_S \in \classP$.
+        \begin{solution}
+            %enter your solution here
+        \end{solution}
+
+        \part[5] Consider the language \textsc{factor} = $\{\langle \llcorner n \lrcorner_1, \llcorner k \lrcorner_1\rangle|$ $n$ have a factor smaller than $k$ besides 1$\}$.
+        
+        Show that choosing the unary representation may make a difference by showing that $\textsc{factor}$ is in $\classP$ but changing base to binary \href{https://en.wikipedia.org/wiki/NP-intermediate}{might} result in a language not being in $\classP$. 
+        \begin{solution}
+            %enter your solution here
+        \end{solution}
+
+
+    \end{parts} 
+      
+    \question[10] 
+    \begin{definition}[Shuffle Operator(returns)]
+        Let $L \subseteq \{0,1\}^*$ be a some language. The operator $\shuffle$ is defined as, $\shuffle(L) = \{w\in \{0,1\}^*\mid \exists x \in L \;s.t. \; w \text{ is obtained by shuffling}$ \\$\text{ the characters of } x\}$. More formally, $$\shuffle(L) = \{w = w_1w_2\dots w_n\in \{0,1\}^*\mid \exists x = x_1x_2 \dots x_n \in L, \;s.t.\; \forall w_i !\exists x_j : w_i = x_j\}$$ 
+    \end{definition}
+    
+    Prove or disprove the following claim: 
+    $\classNP$ is closed under $\shuffle$.
+    (You may assume the pumping lemma in this problem.)
+
+    \begin{solution}
+        % Enter your solution here.
+    \end{solution}
+
+    \question Let $G = (V,E)$ be a graph, then a \emph{clique} in $G$ is a subset of vertices $C \subseteq V$ such that every vertex $v$ in $C$ is connected to every other vertex in $C$. The size of the clique is the number of vertices in it. An \emph{independent set} in $G$ is a subset of vertices $I \subseteq V$ such that no vertex $v$ in $I$ is connected to any other vertex in $I$. The size of the independent set is the number of vertices in it. A \emph{Vertex Cover} in $G$ is a subset of vertices $S \subseteq V$ 
+    such that each edge in $G$ is incident on at least one vertex in $S$. The size of the vertex cover is the number of vertices in it.
+
+    Consider the following computational problems:
+    \begin{eqnarray*}
+        \Prob{clique} &=& \{ \langle G, k\rangle \mid G \text{contains a clique of size } k \} \\
+        \Prob{independent-set} &=& \{ \langle G, k \rangle \mid G \text{contains an independent set of size } k \} \\
+        \Prob{vertex-cover} &=& \{ \langle G, k\rangle \mid G \text{contains a vertex cover of size } k \} 
+    \end{eqnarray*}
+    
+    Now an interesting thing about many graphs problems in class $\classNP$ is that we can use the solution of one of them to solve the other. That is if we can solve one of them efficiently we can use that efficient solution to solve the others efficiently too. In this problem we will prove exactly that.
+
+    \begin{parts}
+        \part[5] Show that $\Prob{clique} \in \classNP$.
+        \begin{solution}
+            %enter your solution here
+        \end{solution}
+
+        \part[5] Show that $\Prob{independent-set} \in \classNP$.
+        \begin{solution}
+            %enter your solution here
+        \end{solution}
+
+        \part[5] Show that $\Prob{vertex-cover} \in \classNP$.
+        \begin{solution}
+            %enter your solution here
+        \end{solution}
+
+
+        \part[5] Show that if any $\Pi \in \{\Prob{clique}, \Prob{independent-set}, \Prob{vertex-cover}\}$ is in $\classP$ then all $\Gamma \in \{\Prob{clique}, \Prob{independent-set}, \Prob{vertex-cover}\}$ are in $\classP$. 
+        
+        (Hint: use the solution for each possible $\Pi$ to solve all possible $\Gamma$, it will be helpful to draw a graph and analyze the relation between the cliques, independent sets and vertex covers in that graph.)
+        \begin{solution}
+            %enter your solution here
+        \end{solution}
+
+    \end{parts}
+
+
+
+    \end{questions}
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
